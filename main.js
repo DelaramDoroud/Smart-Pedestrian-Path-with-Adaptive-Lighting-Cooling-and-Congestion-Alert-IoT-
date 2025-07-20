@@ -1,13 +1,15 @@
 const mqtt = require('mqtt');
 const { handleLightMessage } = require('./lightController');
-const broker = 'mqtts://broker.hivemq.com';
+const broker = 'mqtt://broker.hivemq.com';
 const topic = 'smartpath/data';
 topicOutLight = 'smartpath/lights/control';
 
 const client = mqtt.connect(broker);
+client.publish('smartpath/lights/control', '', { retain: true });
 // console.log("Connecting to MQTT broker");
 client.on('connect', () => {
     console.log('Connected to MQTT broker');
+    //client.publish('smartpath/lights/control', '', { retain: true });
     client.subscribe(topic, (err) => {
         if (err) {
             console.error('Subscription error:', err);
