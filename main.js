@@ -4,10 +4,10 @@ const { handleCrowdMessage } = require('./crowdController');
 const broker = 'mqtts://broker.hivemq.com';
 const topic = 'smartpath/data';
 const topicCrowd = 'smartpath/crowd';
-topicOutLight = 'smartpath/lights/control';
+const topicOutLight = 'smartpath/lights/control';
 
 const client = mqtt.connect(broker);
-client.publish('smartpath/lights/control', '', { retain: true });
+//client.publish('smartpath/lights/control', '', { retain: true });
 // console.log("Connecting to MQTT broker");
 client.on('connect', () => {
     console.log('Connected to MQTT broker');
@@ -28,9 +28,9 @@ client.on('message', (topic, message) => {
         if ('light' in data) {
             handleLightMessage(data, client, topicOutLight);
         }
-        if ('crowd' in data) {
-            handleCrowdMessage(data, client);
-        }
+        // if ('crowd' in data) {
+        //     handleCrowdMessage(data, client, topicCrowd);
+        // }
     } catch (error) {
         console.error('Error processing message:', error);
     }

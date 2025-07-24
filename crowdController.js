@@ -1,8 +1,8 @@
 const CROWD_THRESHOLD = 10;
-const ALERT_TOPIC = "smartpath/alert";
+//const ALERT_TOPIC = "smartpath/alert";
 let lastAlertState = null;
 
-function handleCrowdMessage(data, mqttClient) {
+function handleCrowdMessage(data, mqttClient, topicOut) {
   const  crowd  = data.crowd.value;
   console.log(`Received crowd count: ${crowd}`);
   const shouldAlert = crowd > CROWD_THRESHOLD;
@@ -20,7 +20,7 @@ function handleCrowdMessage(data, mqttClient) {
     };
 
     console.log("Publishing alert:", payload);
-    mqttClient.publish(ALERT_TOPIC, JSON.stringify(payload));
+    mqttClient.publish(topicOut, JSON.stringify(payload));
   } else {
     console.log("No change in alert status.");
   }
