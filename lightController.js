@@ -11,7 +11,7 @@ function handleLightMessage(data, mqttClient, topicOut) {
     brightness = 0;
   }
 
-  const controlMsg = JSON.stringify({ lights: brightness });
+  const controlMsg = JSON.stringify({ light: brightness });
   mqttClient.publish(topicOut, controlMsg);
   console.log(`Published to ${topicOut}: ${controlMsg}`);
 }
