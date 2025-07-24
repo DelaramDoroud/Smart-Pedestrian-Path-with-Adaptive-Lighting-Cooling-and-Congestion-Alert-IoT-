@@ -1,5 +1,6 @@
 const mqtt = require('mqtt');
 const { handleLightMessage } = require('./lightController');
+const { handleCrowdMessage } = require('./crowdController');
 const broker = 'mqtts://broker.hivemq.com';
 const topic = 'smartpath/data';
 const topicCrowd = 'smartpath/crowd';
