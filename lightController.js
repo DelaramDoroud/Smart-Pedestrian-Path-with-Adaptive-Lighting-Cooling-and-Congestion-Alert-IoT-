@@ -4,9 +4,9 @@ function handleLightMessage(data, mqttClient, topicOut) {
   console.log(`Light = ${light}`);
   let brightness;
   if (light < 2804) {
-    brightness = 255; //crowd > 0 ? 255 : 100;
+    brightness = 255; crowd > 0 ? 255 : 100;
   } else if (light >= 2804 && light < 3277) {
-    brightness = 100; //crowd > 0 ? 100 : 0;
+    brightness = 50; crowd > 0 ? 100 : 0;
   } else if (light >= 3277) {
     brightness = 0;
   }
