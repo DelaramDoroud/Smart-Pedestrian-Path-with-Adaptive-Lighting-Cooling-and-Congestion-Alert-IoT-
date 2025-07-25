@@ -1,10 +1,12 @@
 const mqtt = require('mqtt');
 const { handleLightMessage } = require('./lightController');
 const { handleCrowdMessage } = require('./crowdController');
+const { handleCoolingMessage } = require('./coolingController');
 const broker = 'mqtts://broker.hivemq.com';
 const topic = 'smartpath/data';
 const topicCrowd = 'smartpath/alert';
 const topicOutLight = 'smartpath/lights/control';
+const topicCooling = 'smartpath/cooling/control';
 
 const client = mqtt.connect(broker);
 //client.publish('smartpath/lights/control', '', { retain: true });
@@ -31,6 +33,9 @@ client.on('message', (topic, message) => {
         if ('crowd' in data) {
             handleCrowdMessage(data, client, topicCrowd);
         }
+        if ('temp' in data && 'humidity' in data) {
+            handleCoolingMessage(data, client, topicCooling);
+}
     } catch (error) {
         console.error('Error processing message:', error);
     }
