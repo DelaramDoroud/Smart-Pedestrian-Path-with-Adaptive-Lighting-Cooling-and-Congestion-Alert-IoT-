@@ -1,5 +1,4 @@
 const CROWD_THRESHOLD = 10;
-//const ALERT_TOPIC = "smartpath/alert";
 let lastAlertState = null;
 
 function handleCrowdMessage(data, mqttClient, topicOut) {
