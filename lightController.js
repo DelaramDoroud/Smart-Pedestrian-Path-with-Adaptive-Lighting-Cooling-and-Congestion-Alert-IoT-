@@ -1,5 +1,5 @@
 const { getCrowd } = require('./crowdState');
-function handleLightMessage(data, mqttClient, topicOut) {
+function handleLightMessage(data, hivemqClient, topicOut, ubidotsClient) {
   const light = data.light;
   //const crowd = data.crowd?.value ?? 0;
   const crowd = getCrowd();
@@ -15,7 +15,9 @@ function handleLightMessage(data, mqttClient, topicOut) {
 
   //console.log("Received data:", JSON.stringify(data, null, 2));
   const controlMsg = JSON.stringify({ light: brightness });
-  mqttClient.publish(topicOut, controlMsg);
+  hivemqClient.publish(topicOut, controlMsg);
+  const statusMsg = JSON.stringify({ light_status: (brightness > 0 ? 1 : 0) });
+  ubidotsClient.publish("/v1.6/devices/esp32-node1", statusMsg);
   console.log(`Published to ${topicOut}: ${controlMsg}`);
 
 }

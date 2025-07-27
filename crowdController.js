@@ -2,7 +2,7 @@ const { setCrowd } = require('./crowdState');
 const CROWD_THRESHOLD = 10;
 let lastAlertState = null;
 
-function handleCrowdMessage(data, mqttClient, topicOut) {
+function handleCrowdMessage(data, hivemqClient, topicOut, ubidotsClient) {
   const  crowd  = data.crowd.value;
   console.log(`Received crowd count: ${crowd}`);
   setCrowd(crowd);
@@ -21,7 +21,9 @@ function handleCrowdMessage(data, mqttClient, topicOut) {
     };
 
     console.log("Publishing alert:", payload);
-    mqttClient.publish(topicOut, JSON.stringify(payload));
+    hivemqClient.publish(topicOut, JSON.stringify(payload));
+    const statusMsg = JSON.stringify({ congestion_alert: shouldAlert ? 1 : 0 });
+    ubidotsClient.publish("/v1.6/devices/esp32-node1", statusMsg);
   } else {
     console.log("No change in alert status.");
   }

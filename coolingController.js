@@ -1,5 +1,5 @@
 const { getCrowd } = require('./crowdState');
-function handleCoolingMessage(data, mqttClient, topicOut) {
+function handleCoolingMessage(data, hivemqClient, topicOut, ubidotsClient) {
   const temp = data.temp;
   const humidity = data.humidity;
   const crowd = getCrowd();
@@ -13,7 +13,9 @@ function handleCoolingMessage(data, mqttClient, topicOut) {
   console.log(`Cooling decision: Temp = ${temp}, Humidity = ${humidity}, Cooling = ${shouldCool}`);
 
   const payload = JSON.stringify({ cooling: shouldCool });
-  mqttClient.publish(topicOut, payload);
+  hivemqClient.publish(topicOut, payload);
+  const statusMsg = JSON.stringify({ cooling_status: shouldCool ? 1 : 0 });
+  ubidotsClient.publish("/v1.6/devices/esp32-node1", statusMsg);
   console.log(`Published to ${topicOut}: ${payload}`);
 }
 
